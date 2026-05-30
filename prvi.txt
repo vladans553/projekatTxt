@@ -1,1 +1,3 @@
 estam prvi put , ovo je prva izmena 
+
+nova izmena vezbamo revert
