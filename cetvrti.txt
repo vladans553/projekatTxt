@@ -1,35 +1,10 @@
-package estam.estamPaket;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-
-public class EstamClassDva {
-
-    public static void main(String[] args) {
-
-        List<String> list = Arrays.asList("eki","zef","gzim","gani","gani","saki");
-        List<String> ptrn = Arrays.asList("eki","zef","gzim","gani");
-
-        Map<String, Boolean> results = validatePattern(list, ptrn);
-        
-        System.out.println(results);
-        
-    }
-    
-    
-    
-    
-    
     public static <T> Map<String, Boolean> validatePattern(
             List<T> list,
             List<T> pattern) {
 
         AtomicInteger p = new AtomicInteger();
-
+        
+        //PROVERA DALI JE OBRAZAC ISPRAVAN BEZ OBZIRA NA BROJ DUPLKATATA
         boolean patternMatches = list.stream().allMatch(item -> {
             int i = p.get();
 
@@ -45,7 +20,7 @@ public class EstamClassDva {
 
             return false;
         });
-
+        //PROVERAVA DALI LISTA BEZ DUPLIKATA PRATI OBRAZAC
         boolean sameDistinctValues = list.stream()
                 .distinct()
                 .collect(Collectors.toList())
@@ -57,17 +32,3 @@ public class EstamClassDva {
 
         return result;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-}
