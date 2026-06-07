@@ -1,10 +1,209 @@
+package estam.estamPaket;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntPredicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+public class EstamClassDva {
+
+    public static void main(String[] args) {
+
+        List<String> pattern = Arrays.asList("edi", "beki", "seki", "saki");
+
+        getTestList().forEach(list -> {
+
+            IntPredicate condition =
+                    i -> i == 0 || !list.get(i).equals(list.get(i - 1));
+
+            List<String> filteredList = IntStream.range(0, list.size())
+                    .filter(condition)
+                    .mapToObj(list::get)
+                    .collect(Collectors.toList());
+
+            System.out.println("INPUT    = " + list);
+            System.out.println("FILTERED = " + filteredList);
+            System.out.println("MATCH    = " + filteredList.equals(pattern));
+            System.out.println("-----------------------------------");
+        });
+    }
+
+    public static List<List<String>> getTestList() {
+
+        return Arrays.asList(
+
+                // 1. Prazna lista
+                Arrays.asList(),
+
+                // 2. Jedan element
+                Arrays.asList("edi"),
+
+                // 3. Pogrešan redosled
+                Arrays.asList(
+                        "edi",
+                        "seki",
+                        "beki",
+                        "saki"
+                ),
+
+                // 4. Tačan obrazac
+                Arrays.asList(
+                        "edi",
+                        "beki",
+                        "seki",
+                        "saki"
+                ),
+
+                // 5. Duplikati samo na početku
+                Arrays.asList(
+                        "edi", "edi", "edi",
+                        "beki",
+                        "seki"
+                ),
+
+                // 6. Duplikati samo na kraju
+                Arrays.asList(
+                        "edi",
+                        "beki",
+                        "seki",
+                        "saki", "saki", "saki"
+                ),
+
+                // 7. Duplikati u sredini
+                Arrays.asList(
+                        "edi",
+                        "beki", "beki", "beki",
+                        "seki",
+                        "saki"
+                ),
+
+                // 8. Više grupa duplikata
+                Arrays.asList(
+                        "edi", "edi",
+                        "beki", "beki", "beki",
+                        "seki", "seki",
+                        "saki", "saki"
+                ),
+
+                // 9. Ponavljanja koja nisu uzastopna
+                Arrays.asList(
+                        "edi",
+                        "beki",
+                        "edi",
+                        "seki",
+                        "edi",
+                        "saki"
+                ),
+
+                // 10. Veoma mešana lista
+                Arrays.asList(
+                        "edi", "edi",
+                        "beki",
+                        "beki", "beki",
+                        "seki",
+                        "saki", "saki",
+                        "edi",
+                        "edi",
+                        "beki",
+                        "beki",
+                        "saki"
+                ),
+
+                // 11. Nedostaje prvi element
+                Arrays.asList(
+                        "beki",
+                        "seki",
+                        "saki"
+                ),
+
+                // 12. Nedostaje poslednji element
+                Arrays.asList(
+                        "edi",
+                        "beki",
+                        "seki"
+                ),
+
+                // 13. Samo poslednji element
+                Arrays.asList(
+                        "saki"
+                ),
+
+                // 14. Samo srednji element
+                Arrays.asList(
+                        "beki"
+                ),
+
+                // 15. Dodatni element na kraju
+                Arrays.asList(
+                        "edi",
+                        "beki",
+                        "seki",
+                        "saki",
+                        "miki"
+                ),
+
+                // 16. Dodatni element na početku
+                Arrays.asList(
+                        "miki",
+                        "edi",
+                        "beki",
+                        "seki",
+                        "saki"
+                ),
+
+                // 17. Dodatni element u sredini
+                Arrays.asList(
+                        "edi",
+                        "beki",
+                        "miki",
+                        "seki",
+                        "saki"
+                ),
+
+                // 18. Počinje od pogrešnog elementa
+                Arrays.asList(
+                        "beki",
+                        "beki",
+                        "seki",
+                        "saki"
+                ),
+
+                // 19. Ceo obrazac ponovljen dva puta
+                Arrays.asList(
+                        "edi",
+                        "beki",
+                        "seki",
+                        "saki",
+                        "edi",
+                        "beki",
+                        "seki",
+                        "saki"
+                ),
+
+                // 20. Ceo obrazac ponovljen sa duplikatima
+                Arrays.asList(
+                        "edi", "edi",
+                        "beki", "beki",
+                        "seki", "seki",
+                        "saki", "saki",
+                        "edi", "edi",
+                        "beki", "beki",
+                        "seki", "seki",
+                        "saki", "saki"
+                )
+        );
+    }
+
     public static <T> Map<String, Boolean> validatePattern(
             List<T> list,
             List<T> pattern) {
 
         AtomicInteger p = new AtomicInteger();
-        
-        //PROVERA DALI JE OBRAZAC ISPRAVAN BEZ OBZIRA NA BROJ DUPLKATATA
+
         boolean patternMatches = list.stream().allMatch(item -> {
             int i = p.get();
 
@@ -20,7 +219,7 @@
 
             return false;
         });
-        //PROVERAVA DALI LISTA BEZ DUPLIKATA PRATI OBRAZAC
+
         boolean sameDistinctValues = list.stream()
                 .distinct()
                 .collect(Collectors.toList())
@@ -32,3 +231,4 @@
 
         return result;
     }
+}
